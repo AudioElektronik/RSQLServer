@@ -12,6 +12,11 @@ setMethod("sqlCreateTable", "SQLServerConnection",
     field_names <- dbQuoteIdentifier(con, names(fields))
     field_types <- unname(fields)
     fields <- paste0(field_names, " ", field_types)
+    if (temporary) {
+      fields <- ifelse(grepl("CHAR", field_types),
+                       paste(fields, "COLLATE DATABASE_DEFAULT"),
+                       fields)
+    }
     SQL(paste0("CREATE TABLE ", table, " (\n",
       "  ", paste(fields, collapse = ",\n  "), "\n)\n"))
 })
