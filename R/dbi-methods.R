@@ -364,7 +364,7 @@ setMethod("dbWriteTable", "SQLServerConnection",
       }
 
       if (!found || temp || overwrite) {
-        dbExecute(conn, sqlCreateTable(conn, name, value))
+        dbExecute(conn, sqlCreateTable(conn, name, value, temporary = temp))
       }
 
       if (nrow(value) > 0) {
