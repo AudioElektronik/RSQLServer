@@ -2,8 +2,9 @@
 #' @rdname SQLServerConnection-class
 setMethod("sqlCreateTable", "SQLServerConnection",
   function(con, table, fields, row.names = NA, temporary = FALSE, ...) {
-    if (temporary && !is(table, "SQL")) {
-      table <- dbQuoteIdentifier(con, paste0("#", table))
+    if (!is(table, "SQL")) {
+      if (temporary) table <- paste0("#", table)
+      table <- dbQuoteIdentifier(con, table)
     }
     if (is.data.frame(fields)) {
       fields <- sqlRownamesToColumn(fields, row.names)
